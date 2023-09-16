@@ -1,12 +1,30 @@
 import { useState, useEffect } from "react";
 
-interface ReceivedDataType {
-  type: string;
-  data: {zoomLevel: number, address: string};
-};
+interface PlaceSelectType {
+  type: "placeSelect";
+  data: { zoomLevel: number; address: string };
+}
+
+interface EnteringExplore {
+  type: "enteringExplore";
+  data: { userId: string };
+}
+
+type ReceivedDataType = PlaceSelectType | EnteringExplore;
 
 const useRNWebBridge = () => {
-  const [receivedData, setReceivedData] = useState<ReceivedDataType | null>(null);
+  const [receivedData, setReceivedData] = useState<ReceivedDataType | null>(
+    null
+  );
+
+  // React 앱에서 RN 앱으로 메시지를 보내는 함수
+  const sendMessageToRN = () => {
+    if (window.ReactNativeWebView) {
+      // RN 웹뷰에서만 동작하도록 체크
+      const message = { type: "initialize" }; // 또는 원하는 데이터를 포함한 메시지
+      window.ReactNativeWebView.postMessage(JSON.stringify(message));
+    }
+  };
 
   const handleReceivedData = (event: any) => {
     if (typeof event.data === "string") {
@@ -14,6 +32,9 @@ const useRNWebBridge = () => {
         const parsedData = JSON.parse(event.data);
         setReceivedData(parsedData);
 
+        if (parsedData.type === "enteringExplore") {
+          // alert(JSON.stringify(parsedData.data));
+        }
         if (parsedData.type === "placeSelect") {
           // alert(parsedData.data);
         }
@@ -31,6 +52,9 @@ const useRNWebBridge = () => {
 
     if (addTarget) {
       addTarget.addEventListener("message", handleReceivedData);
+
+      // RN 앱에 메시지 보내기
+      sendMessageToRN();
 
       return () => {
         addTarget.removeEventListener("message", handleReceivedData);
