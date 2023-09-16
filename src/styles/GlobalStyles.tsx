@@ -1,4 +1,4 @@
-import { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
 
 const GlobalStyles = createGlobalStyle`
@@ -32,6 +32,14 @@ const GlobalStyles = createGlobalStyle`
     background: transparent;
     cursor: pointer;
   }
+`;
+
+export const StyledText = styled.p`
+  font-family: "SpoqaHanSansNeo-Regular";
+`;
+
+export const BoldStyledText = styled.p`
+  font-family: "SpoqaHanSansNeo-Bold";
 `;
 
 export default GlobalStyles;
