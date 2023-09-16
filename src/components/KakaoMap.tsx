@@ -36,32 +36,6 @@ const KakaoMap = () => {
   const [landmarkMarkers, setLandmarkMarkers] = useState<any[]>([]);
   const [allMarkers, setAllMarkers] = useState<any[]>([]);
 
-  const setMarkerOnMap = useCallback(
-    async (address: string) => {
-      const imageSrc = `${process.env.PUBLIC_URL}/icon/mapMarker.png`;
-      const imageSize = new window.kakao.maps.Size(40, 40);
-      const imageOption = { offset: new window.kakao.maps.Point(20, 40) };
-
-      const markerImage = new window.kakao.maps.MarkerImage(
-        imageSrc,
-        imageSize,
-        imageOption
-      );
-
-      const coordinates = await getAddressCoordinates(address);
-      const markerPosition = new window.kakao.maps.LatLng(
-        coordinates.y,
-        coordinates.x
-      );
-
-      new window.kakao.maps.Marker({
-        position: markerPosition,
-        image: markerImage,
-      }).setMap(kakaoMap);
-    },
-    [kakaoMap]
-  );
-
   // 좌표 데이터를 DB에서 가져오는 함수입니다.
   // DB에서 각 장소 데이터를 가져오고,
   // 각 장소에서 주소 데이터를 가져오고,
@@ -143,7 +117,7 @@ const KakaoMap = () => {
           imageOption
         );
 
-        const markerPosition = new window.kakao.maps.LatLng(data.y, data.x);
+        const markerPosition = new window.kakao.maps.LatLng(data.lat, data.lng);
 
         const marker = new window.kakao.maps.Marker({
           position: markerPosition,
@@ -166,8 +140,8 @@ const KakaoMap = () => {
       try {
         const coordinates = await getAddressCoordinates(address);
         const newLatLng = new window.kakao.maps.LatLng(
-          Number(coordinates.y) - 0.004, // 마커보다 살짝 아래를 중앙으로 가리키게끔
-          coordinates.x
+          Number(coordinates.lat) - 0.004, // 마커보다 살짝 아래를 중앙으로 가리키게끔
+          coordinates.lng
         );
         kakaoMap.setCenter(newLatLng);
       } catch (error: any) {
@@ -256,7 +230,7 @@ const KakaoMap = () => {
       updateMapCenterFromAddress(receivedData.data.address);
       kakaoMap.setLevel(receivedData.data.zoomLevel);
     }
-  }, [kakaoMap, receivedData, setMarkerOnMap, updateMapCenterFromAddress]);
+  }, [kakaoMap, receivedData, updateMapCenterFromAddress]);
 
   return <Map ref={mapRef} />;
 };
