@@ -110,7 +110,9 @@ const KakaoMap = () => {
               "/place";
             response = await axios.get(url);
             places = response.data;
-            addresses = places.map((place) => place.address);
+            addresses = places
+              .filter((place) => !place.is_landmark)
+              .map((place) => place.address);
 
             return await Promise.all(
               addresses.map((address) => getAddressCoordinates(address))
