@@ -38,8 +38,8 @@ const KakaoRedirectHandler = () => {
 
       const user = {
         id: profileResponse.data.id,
-        username: profileResponse.data.nickname,
-        profile: profileResponse.data.profileImageUrl,
+        username: profileResponse.data.properties.nickname,
+        profile: profileResponse.data.properties.profile_image,
       };
 
       dispatch(login(user));

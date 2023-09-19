@@ -18,9 +18,7 @@ const getAddressCoordinates = async (address: string) => {
 
     if (response.data.documents && response.data.documents.length > 0) {
       const { x, y } = response.data.documents[0].address; // 첫번째 결과의 좌표값 가져오기
-      const lat = y;
-      const lng = x;
-      return { lat, lng };
+      return { lat: y, lng: x };
     } else {
       throw new Error("No results found for the given address.");
     }

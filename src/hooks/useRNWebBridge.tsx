@@ -19,8 +19,8 @@ const useRNWebBridge = () => {
 
   // React 앱에서 RN 앱으로 메시지를 보내는 함수
   const sendMessageToRN = () => {
+    // RN 웹뷰에서만 동작하도록 체크
     if (window.ReactNativeWebView) {
-      // RN 웹뷰에서만 동작하도록 체크
       const message = { type: "initialize" }; // 또는 원하는 데이터를 포함한 메시지
       window.ReactNativeWebView.postMessage(JSON.stringify(message));
     }
