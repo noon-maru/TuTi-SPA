@@ -317,6 +317,12 @@ const KakaoMap = () => {
       createMarkers("landmark", landmarkMarkerData, wishMarkerData)
     );
     setAllMarkers(createMarkers("all", allMarkerData, wishMarkerData));
+
+    // RN 웹뷰에서만 동작하도록 체크
+    if (window.ReactNativeWebView)
+      window.ReactNativeWebView.postMessage(
+        JSON.stringify({ type: "initializationComplete" })
+      );
   }, [getMarkerData, createMarkers]);
 
   // 마커 표시 로직
