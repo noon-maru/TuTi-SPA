@@ -15,6 +15,8 @@ declare global {
 const kakao = window.kakao;
 
 interface TourismInfo {
+  parkingInfo: string;
+  advice: string;
   admissionFee: number;
   closedDays: string[];
   subwayInfo: string[];
@@ -75,6 +77,8 @@ const KakaoMap = () => {
             placeId: placeData?._id,
             address: placeData?.address,
             markerName: placeData?.name || "일시적 오류",
+            parkingInfo: placeData?.parkingInfo,
+            advice: placeData?.advice,
             admissionFee: placeData?.tourismInfo.admissionFee,
             closedDays: placeData?.tourismInfo.closedDays,
             subwayInfo: placeData?.tourismInfo.subwayInfo,
