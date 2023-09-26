@@ -72,6 +72,7 @@ const KakaoMap = () => {
           type: "markerClick",
           // InformBox에 들어갈 정보
           data: {
+            placeId: placeData?._id,
             address: placeData?.address,
             markerName: placeData?.name || "일시적 오류",
             admissionFee: placeData?.tourismInfo.admissionFee,
