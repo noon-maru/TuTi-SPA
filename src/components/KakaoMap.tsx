@@ -365,6 +365,13 @@ const KakaoMap = () => {
     }
   }, [receivedData]);
 
+  // 찜 버튼을 클릭했을 때, Marker 배열 다시 초기화
+  useEffect(() => {
+    if (receivedData?.type === "wishClick") {
+      initializeMarker();
+    }
+  }, [receivedData, initializeMarker]);
+
   useEffect(() => {
     if (userId !== "") {
       initializeMarker();

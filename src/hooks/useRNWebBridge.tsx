@@ -10,7 +10,12 @@ interface EnteringExplore {
   data: { userId: string };
 }
 
-type ReceivedDataType = PlaceSelectType | EnteringExplore;
+interface WishClick {
+  type: "wishClick";
+  data: {};
+}
+
+type ReceivedDataType = PlaceSelectType | EnteringExplore | WishClick;
 
 const useRNWebBridge = () => {
   const [receivedData, setReceivedData] = useState<ReceivedDataType | null>(
@@ -37,6 +42,9 @@ const useRNWebBridge = () => {
         }
         if (parsedData.type === "placeSelect") {
           // alert(parsedData.data);
+        }
+        if (parsedData.type === "wishClick") {
+          // alert(JSON.stringify(parsedData.data));
         }
       } catch (error: any) {
         alert(error.message);
