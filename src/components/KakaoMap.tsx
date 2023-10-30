@@ -396,8 +396,8 @@ const KakaoMap = () => {
   // 장소 서랍에서 장소를 선택했을 때
   useEffect(() => {
     if (kakaoMap && receivedData?.type === "placeSelect") {
-      updateMapCenter(receivedData.data.address);
       kakaoMap.setLevel(receivedData.data.zoomLevel);
+      updateMapCenter(receivedData.data.address);
       handleMarkerClick(receivedData.data.address);
     }
   }, [kakaoMap, receivedData, updateMapCenter, handleMarkerClick]);
