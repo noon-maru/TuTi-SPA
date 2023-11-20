@@ -20,7 +20,7 @@ const GlobalStyles = createGlobalStyle`
   }
   body {
     line-height: 1;
-    font-family: 'Noto Sans KR', sans-serif;
+    font-family: "Spoqa Han Sans Neo", sans-serif;
     background-color: #F6F9F0;
     margin-bottom: 100px;
   }
@@ -35,11 +35,13 @@ const GlobalStyles = createGlobalStyle`
 `;
 
 export const StyledText = styled.p`
-  font-family: "SpoqaHanSansNeo-Regular";
+  font-family: Spoqa;
+  font-weight: 400;
 `;
 
 export const BoldStyledText = styled.p`
-  font-family: "SpoqaHanSansNeo-Bold";
+  font-family: Spoqa;
+  font-weight: 700;
 `;
 
 export default GlobalStyles;
