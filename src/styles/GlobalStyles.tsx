@@ -1,4 +1,4 @@
-import styled, { createGlobalStyle } from "styled-components";
+import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
 
 const GlobalStyles = createGlobalStyle`
@@ -15,14 +15,13 @@ const GlobalStyles = createGlobalStyle`
     margin: 0;
     padding: 0;
     border: 0;
-    font-size: 10px;
+    font-size: 16px;
     vertical-align: baseline;
   }
   body {
     line-height: 1;
     font-family: "Spoqa Han Sans Neo", sans-serif;
-    background-color: #F6F9F0;
-    margin-bottom: 100px;
+    background-color: white;
   }
   ol, ul {
     list-style: none;
@@ -32,16 +31,6 @@ const GlobalStyles = createGlobalStyle`
     background: transparent;
     cursor: pointer;
   }
-`;
-
-export const StyledText = styled.p`
-  font-family: Spoqa;
-  font-weight: 400;
-`;
-
-export const BoldStyledText = styled.p`
-  font-family: Spoqa;
-  font-weight: 700;
 `;
 
 export default GlobalStyles;

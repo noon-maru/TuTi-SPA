@@ -1,7 +1,6 @@
 import { PropsWithoutRef } from "react";
 
 import styled from "styled-components";
-import { StyledText } from "styles/GlobalStyles";
 
 export interface SocialLoginButtonProps {
   icon: string;
@@ -51,7 +50,7 @@ const Icon = styled.img`
   height: 18px;
 `;
 
-const LoginText = styled(StyledText)<{ textColor: string }>`
+const LoginText = styled.p<{ textColor: string }>`
   color: ${(props) => props.textColor};
   font-size: 14.5px;
 `;
