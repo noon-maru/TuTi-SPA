@@ -20,6 +20,7 @@ const CarouselPage = () => {
         imageDataList={imageDataList}
         setImageDataList={setImageDataList}
       />
+      <Title>{"이미지 추가"}</Title>
       <PostCarousel setImageDataList={setImageDataList} />
     </Container>
   );

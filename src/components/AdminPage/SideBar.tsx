@@ -3,9 +3,9 @@ import { styled } from "styled-components";
 
 const pageList = [
   { title: "캐러셀 관리", route: "carousel" },
-  { title: "일반 장소 추가", route: "" },
-  { title: "추천 장소 추가", route: "" },
-  { title: "추천 코스 추가", route: "" },
+  { title: "일반 장소 관리", route: "place" },
+  { title: "추천 장소 관리", route: "recommendedplace" },
+  { title: "추천 코스 관리", route: "recommendedcourse" },
 ];
 
 const devURL = process.env.PUBLIC_URL ? "/proxy/3000" : "";
