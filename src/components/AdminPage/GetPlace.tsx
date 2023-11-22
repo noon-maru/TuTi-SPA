@@ -78,7 +78,7 @@ const GetPlace = ({ placeDataList, setPlaceDataList }: getPlaceProps) => {
     placeName: string
   ) => {
     e.preventDefault();
-    if (!window.confirm(`캐러셀에서 ${placeName} 장소를 삭제하시겠습니까?`)) {
+    if (!window.confirm(`${placeName} 장소를 삭제하시겠습니까?`)) {
       return;
     }
 
