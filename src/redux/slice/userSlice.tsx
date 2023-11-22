@@ -5,12 +5,14 @@ export interface UserState {
   id: string;
   username: string;
   profile: string;
+  isAdmin: boolean;
 }
 
 const UserInitialState: UserState = {
   id: "",
   username: "",
   profile: "",
+  isAdmin: false,
 };
 
 const userSlice = createSlice({

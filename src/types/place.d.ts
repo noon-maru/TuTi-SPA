@@ -6,18 +6,20 @@ interface Place {
   latitude: number;
   longitude: number;
   image: string;
-  numberHearts: number;
-  is_landmark: boolean;
+  wishPlaceCount: number;
+  isLandmark: boolean;
   tags: string[];
   tourismInfo: TourismInfo;
 }
 
 interface TourismInfo {
+  parkingInfo: string;
+  advice: string;
+  admissionFee: number;
+  closedDays: string[];
+  subwayInfo: string[];
   busInfo: {
     busRoutes: string[];
     busStops: string[];
   };
-  admissionFee: number;
-  closedDays: string[];
-  subwayInfo: string[];
 }

@@ -14,32 +14,6 @@ declare global {
 
 const kakao = window.kakao;
 
-interface TourismInfo {
-  parkingInfo: string;
-  advice: string;
-  admissionFee: number;
-  closedDays: string[];
-  subwayInfo: string[];
-  busInfo: {
-    busRoutes: string[];
-    busStops: string[];
-  };
-}
-
-interface Place {
-  _id: string;
-  address: string;
-  image: string;
-  is_landmark: boolean;
-  latitude: number;
-  longitude: number;
-  name: string;
-  numberHearts: number;
-  region: string;
-  tags: any[];
-  tourismInfo: TourismInfo;
-}
-
 interface Coordinate {
   lat: number;
   lng: number;
@@ -143,7 +117,7 @@ const KakaoMap = () => {
               process.env.REACT_APP_API! +
               "/place";
             response = await axios.get(url);
-            places = response.data.filter((place: Place) => place.is_landmark);
+            places = response.data.filter((place: Place) => place.isLandmark);
             coordinates = places.map((place: Place) => ({
               address: place.address,
               lat: place.latitude,
@@ -158,7 +132,7 @@ const KakaoMap = () => {
               process.env.REACT_APP_API! +
               "/place";
             response = await axios.get(url);
-            places = response.data.filter((place: Place) => !place.is_landmark);
+            places = response.data.filter((place: Place) => !place.isLandmark);
             coordinates = places.map((place: Place) => ({
               address: place.address,
               lat: place.latitude,

@@ -127,8 +127,7 @@ const PostCarousel = ({ setPlaceDataList }: PostPlaceProps) => {
       image: `/static/photo/JPG/${convertAbbreviationToFullName(
         region
       )}/${name}/${image}.jpg`,
-      numberHearts: 0,
-      is_landmark: isLandmark,
+      isLandmark,
       tag: tagList,
       tourismInfo: {
         parkingInfo,

@@ -1,5 +1,8 @@
 import KakaoMap from "components/KakaoMap";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
+
+import { useSelector } from "react-redux";
+import { RootState } from "redux/reducers";
 
 import HomePage from "pages/HomePage";
 import KakaoRedirectHandler from "pages/KakaoRedirectHandler";
@@ -13,11 +16,16 @@ import RecommendedCoursePage from "pages/AdminPage/RecommendedCoursePage";
 const App = () => {
   const devURL = process.env.PUBLIC_URL ? "/proxy/3000" : "";
 
+  const { isAdmin } = useSelector((state: RootState) => state.user);
+
   return (
     <Routes>
       <Route path={`${devURL}/`} element={<HomePage />} />
       <Route path={`${devURL}/kakaomap`} element={<KakaoMap />} />
-      <Route path={`${devURL}/admin`} element={<AdminPage />}>
+      <Route
+        path={`${devURL}/admin`}
+        element={isAdmin ? <AdminPage /> : <Navigate to={`${devURL}/`} />}
+      >
         <Route path={"carousel"} element={<CarouselPage />} />
         <Route path={"place"} element={<PlacePage />} />
         <Route path={"recommendedplace"} element={<RecommendedPlacePage />} />

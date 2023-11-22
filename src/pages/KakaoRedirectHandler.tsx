@@ -40,9 +40,8 @@ const KakaoRedirectHandler = () => {
         id: profileResponse.data.id,
         username: profileResponse.data.properties.nickname,
         profile: profileResponse.data.properties.profile_image,
+        isAdmin: false,
       };
-
-      dispatch(login(user));
 
       const response = await axios.post(
         process.env.REACT_APP_SERVER_URL! +
@@ -50,7 +49,14 @@ const KakaoRedirectHandler = () => {
           "/users/login",
         user
       );
-      console.log(response);
+
+      if (response.status === 200) {
+        if (response.data.isAdmin) {
+          user.isAdmin = response.data.isAdmin;
+        }
+      }
+
+      dispatch(login(user));
     } catch (e: any) {
       console.log(`프로필 가져오기 실패(code:${e.code})`, e.message);
     }
