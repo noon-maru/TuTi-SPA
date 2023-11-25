@@ -1,21 +1,15 @@
-import { useState } from "react";
 import styled from "styled-components";
 
 import GetPlace from "components/AdminPage/GetPlace";
 import PostPlace from "components/AdminPage/PostPlace";
 
 const PlacePage = () => {
-  const [placeDataList, setPlaceDataList] = useState<Place[]>([]);
-
   return (
     <Container>
       <Title>{"일반 장소 조회 및 삭제"}</Title>
-      <GetPlace
-        placeDataList={placeDataList}
-        setPlaceDataList={setPlaceDataList}
-      />
+      <GetPlace />
       <Title>{"일반 장소 추가"}</Title>
-      <PostPlace setPlaceDataList={setPlaceDataList} />
+      <PostPlace />
     </Container>
   );
 };

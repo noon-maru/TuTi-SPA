@@ -1,16 +1,15 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import axios from "axios";
 import styled from "styled-components";
 
 import { RootState } from "redux/reducers";
 import AdditionalInputBox from "./AdditionalInputBox";
-import getAddressCoordinates from "utils/getAddressCoordinates";
 
-interface PostPlaceProps {
-  setPlaceDataList: React.Dispatch<React.SetStateAction<Place[]>>;
-}
+import { setPlaces } from "redux/slice/placesSlice";
+
+import getAddressCoordinates from "utils/getAddressCoordinates";
 
 const regions = [
   "서울",
@@ -62,8 +61,11 @@ const convertFullNameToAbbreviation = (regionFullName: string) => {
   return regions[index];
 };
 
-const PostCarousel = ({ setPlaceDataList }: PostPlaceProps) => {
+const PostPlace = () => {
+  const dispatch = useDispatch();
+
   const { id: userId } = useSelector((state: RootState) => state.user);
+  const { places } = useSelector((state: RootState) => state.places);
 
   const [region, setRegion] = useState<string>("");
   const [name, setName] = useState<string>("");
@@ -156,7 +158,7 @@ const PostCarousel = ({ setPlaceDataList }: PostPlaceProps) => {
         });
 
         alert("장소가 정상적으로 추가 되었습니다.");
-        setPlaceDataList((prev) => [...prev, response.data]);
+        dispatch(setPlaces([...places, response.data]));
       } catch (error) {
         alert(`장소 추가 오류! ${error}`);
         console.error("장소 추가 오류", error);
@@ -305,4 +307,4 @@ const SubmitButton = styled.button`
   padding: 10px;
 `;
 
-export default PostCarousel;
+export default PostPlace;

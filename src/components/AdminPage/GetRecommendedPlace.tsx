@@ -7,24 +7,22 @@ import styled from "styled-components";
 import throttle from "utils/throttle";
 import { RootState } from "redux/reducers";
 
-interface ImageData {
-  imageName: string;
-  imageUrl: string;
+interface getRecommendedPlaceProps {
+  recommendedPlaceDataList: RecommendedPlace[];
+  setRecommendedPlaceDataList: React.Dispatch<
+    React.SetStateAction<RecommendedPlace[]>
+  >;
 }
 
-interface getCarouselProps {
-  imageDataList: ImageData[];
-  setImageDataList: React.Dispatch<React.SetStateAction<ImageData[]>>;
-}
-
-const getCarouselImageData = async (): Promise<ImageData[]> => {
+const getPlaceData = async (): Promise<RecommendedPlace[]> => {
   try {
     const url =
       process.env.REACT_APP_SERVER_URL! +
       process.env.REACT_APP_API! +
-      "/carousel";
+      "/recommendedplaces";
 
     const response = await axios.get(url);
+
     return response.data;
   } catch (error) {
     console.error("네트워킹 오류:", error);
@@ -32,12 +30,12 @@ const getCarouselImageData = async (): Promise<ImageData[]> => {
   }
 };
 
-const deleteCarouselImageData = async (userId: string, imageName: string) => {
+const excludePlaceData = async (userId: string, placeId: string) => {
   try {
     const url =
       process.env.REACT_APP_SERVER_URL! +
       process.env.REACT_APP_API! +
-      `/carousel/${userId}/${imageName}`;
+      `/recommendedplaces/${userId}/${placeId}`;
 
     const response = await axios.delete(url);
     console.log(response.data);
@@ -47,10 +45,10 @@ const deleteCarouselImageData = async (userId: string, imageName: string) => {
   }
 };
 
-const GetCarouselData = ({
-  imageDataList,
-  setImageDataList,
-}: getCarouselProps) => {
+const GetRecommendedPlace = ({
+  recommendedPlaceDataList,
+  setRecommendedPlaceDataList,
+}: getRecommendedPlaceProps) => {
   const { id: userId } = useSelector((state: RootState) => state.user);
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -68,7 +66,7 @@ const GetCarouselData = ({
     setIsDrag(false);
   };
 
-  const onDragMove = (e: any) => {
+  const onDragMove = (e: React.MouseEvent) => {
     if (isDrag && scrollRef.current) {
       const { scrollWidth, clientWidth, scrollLeft } = scrollRef.current;
 
@@ -82,18 +80,24 @@ const GetCarouselData = ({
     }
   };
 
-  const handleImageDelete = async (e: React.MouseEvent, imageName: string) => {
+  const handleImageDelete = async (
+    e: React.MouseEvent,
+    placeId: string,
+    placeName: string
+  ) => {
     e.preventDefault();
-    if (!window.confirm(`캐러셀에서 ${imageName} 이미지를 삭제하시겠습니까?`)) {
+    if (
+      !window.confirm(`${placeName} 장소를 추천 장소에서 제외 하시겠습니까?`)
+    ) {
       return;
     }
 
     const fetchData = async () => {
       try {
-        await deleteCarouselImageData(userId, imageName);
+        await excludePlaceData(userId, placeId);
         // 이미지 삭제 후 state 업데이트
-        setImageDataList((prevList) =>
-          prevList.filter((imageData) => imageData.imageName !== imageName)
+        setRecommendedPlaceDataList((prevList) =>
+          prevList.filter((placeData) => placeData._id !== placeId)
         );
       } catch (error) {
         console.error("네트워킹 오류:", error);
@@ -106,14 +110,14 @@ const GetCarouselData = ({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setImageDataList(await getCarouselImageData());
+        setRecommendedPlaceDataList(await getPlaceData());
       } catch (error) {
         console.error("네트워킹 오류:", error);
         throw error;
       }
     };
     fetchData();
-  }, [setImageDataList]);
+  }, [setRecommendedPlaceDataList]);
 
   const delay = 10;
   const onThrottleDragMove = throttle(onDragMove, delay);
@@ -126,19 +130,17 @@ const GetCarouselData = ({
       onMouseUp={onDragEnd}
       onMouseLeave={onDragEnd}
     >
-      {imageDataList.map((imageData) => (
+      {recommendedPlaceDataList.map((placeData) => (
         <ImageContainer
-          key={imageData.imageName}
-          onClick={(e) => handleImageDelete(e, imageData.imageName)}
+          key={placeData.place.name}
+          onClick={(e) =>
+            handleImageDelete(e, placeData._id!, placeData.place.name)
+          }
         >
           <Image
-            src={
-              process.env.REACT_APP_SERVER_URL! +
-              process.env.REACT_APP_API! +
-              imageData.imageUrl
-            }
+            src={process.env.REACT_APP_SERVER_URL! + placeData.place.image}
           />
-          <PlaceName>{imageData.imageName}</PlaceName>
+          <PlaceName>{placeData.place.name}</PlaceName>
         </ImageContainer>
       ))}
     </Container>
@@ -170,4 +172,4 @@ const Image = styled.img`
   width: 200px;
 `;
 
-export default GetCarouselData;
+export default GetRecommendedPlace;

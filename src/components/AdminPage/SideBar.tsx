@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { styled } from "styled-components";
+import styled from "styled-components";
 
 const pageList = [
   { title: "캐러셀 관리", route: "carousel" },

@@ -1,16 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import axios from "axios";
-import { styled } from "styled-components";
+import styled from "styled-components";
 
-import throttle from "utils/throttle";
 import { RootState } from "redux/reducers";
 
-interface getPlaceProps {
-  placeDataList: Place[];
-  setPlaceDataList: React.Dispatch<React.SetStateAction<Place[]>>;
-}
+import { setPlaces } from "redux/slice/placesSlice";
+
+import throttle from "utils/throttle";
 
 const getPlaceData = async (): Promise<Place[]> => {
   try {
@@ -40,8 +38,11 @@ const deletePlaceData = async (userId: string, placeId: string) => {
   }
 };
 
-const GetPlace = ({ placeDataList, setPlaceDataList }: getPlaceProps) => {
+const GetPlace = () => {
+  const dispatch = useDispatch();
+
   const { id: userId } = useSelector((state: RootState) => state.user);
+  const { places } = useSelector((state: RootState) => state.places);
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -86,8 +87,8 @@ const GetPlace = ({ placeDataList, setPlaceDataList }: getPlaceProps) => {
       try {
         await deletePlaceData(userId, placeId);
         // 이미지 삭제 후 state 업데이트
-        setPlaceDataList((prevList) =>
-          prevList.filter((placeData) => placeData._id !== placeId)
+        dispatch(
+          setPlaces(places.filter((placeData) => placeData._id !== placeId))
         );
       } catch (error) {
         console.error("네트워킹 오류:", error);
@@ -100,14 +101,14 @@ const GetPlace = ({ placeDataList, setPlaceDataList }: getPlaceProps) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setPlaceDataList(await getPlaceData());
+        dispatch(setPlaces(await getPlaceData()));
       } catch (error) {
         console.error("네트워킹 오류:", error);
         throw error;
       }
     };
     fetchData();
-  }, [setPlaceDataList]);
+  }, [dispatch]);
 
   const delay = 10;
   const onThrottleDragMove = throttle(onDragMove, delay);
@@ -120,7 +121,7 @@ const GetPlace = ({ placeDataList, setPlaceDataList }: getPlaceProps) => {
       onMouseUp={onDragEnd}
       onMouseLeave={onDragEnd}
     >
-      {placeDataList.map((placeData) => (
+      {places.map((placeData) => (
         <ImageContainer
           key={placeData.name}
           onClick={(e) => handleImageDelete(e, placeData._id, placeData.name)}

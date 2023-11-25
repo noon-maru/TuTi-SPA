@@ -8,7 +8,7 @@ export interface UserState {
   isAdmin: boolean;
 }
 
-const UserInitialState: UserState = {
+const initialState: UserState = {
   id: "",
   username: "",
   profile: "",
@@ -17,10 +17,10 @@ const UserInitialState: UserState = {
 
 const userSlice = createSlice({
   name: "user",
-  initialState: UserInitialState,
+  initialState,
   reducers: {
     login: (state, action: PayloadAction<UserState>) => action.payload,
-    logout: () => UserInitialState,
+    logout: () => initialState,
   },
 });
 

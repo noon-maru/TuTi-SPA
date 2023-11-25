@@ -1,9 +1,58 @@
+import { useEffect, useState } from "react";
+
 import styled from "styled-components";
 
+import axios from "axios";
+import { useDispatch } from "react-redux";
+
+import { setPlaces } from "redux/slice/placesSlice";
+
+import GetRecommendedPlace from "components/AdminPage/GetRecommendedPlace";
+import PostRecommendedPlace from "components/AdminPage/PostRecommendedPlace";
+
+const getPlaceData = async (): Promise<Place[]> => {
+  try {
+    const url =
+      process.env.REACT_APP_SERVER_URL! + process.env.REACT_APP_API! + "/place";
+
+    const response = await axios.get(url);
+    return response.data;
+  } catch (error) {
+    console.error("네트워킹 오류:", error);
+    throw error;
+  }
+};
+
 const RecommendedPlacePage = () => {
+  const dispatch = useDispatch();
+
+  const [recommendedPlaceDataList, setRecommendedPlaceDataList] = useState<
+    RecommendedPlace[]
+  >([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        dispatch(setPlaces(await getPlaceData()));
+      } catch (error) {
+        console.error("네트워킹 오류:", error);
+        throw error;
+      }
+    };
+    fetchData();
+  }, [dispatch]);
+
   return (
     <Container>
+      <Title>{"추천 장소 조회 및 삭제"}</Title>
+      <GetRecommendedPlace
+        recommendedPlaceDataList={recommendedPlaceDataList}
+        setRecommendedPlaceDataList={setRecommendedPlaceDataList}
+      />
       <Title>{"추천 장소 추가"}</Title>
+      <PostRecommendedPlace
+        setRecommendedPlaceDataList={setRecommendedPlaceDataList}
+      />
     </Container>
   );
 };
