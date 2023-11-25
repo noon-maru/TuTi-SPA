@@ -1,10 +1,13 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import axios from "axios";
 import styled from "styled-components";
 
 import { setPlaces } from "redux/slice/placesSlice";
+
+import GetRecommendedCourse from "components/AdminPage/GetRecommendedCourse";
+import PostRecommendedCourse from "components/AdminPage/PostRecommendedCourse";
 
 const getPlaceData = async (): Promise<Place[]> => {
   try {
@@ -22,6 +25,10 @@ const getPlaceData = async (): Promise<Place[]> => {
 const RecommendedCoursePage = () => {
   const dispatch = useDispatch();
 
+  const [recommendedCourseDataList, setRecommendedCourseDataList] = useState<
+    RecommendedCourse[]
+  >([]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -36,7 +43,15 @@ const RecommendedCoursePage = () => {
 
   return (
     <Container>
+      <Title>{"추천 코스 조회 및 삭제"}</Title>
+      <GetRecommendedCourse
+        recommendedCourseDataList={recommendedCourseDataList}
+        setRecommendedCourseDataList={setRecommendedCourseDataList}
+      />
       <Title>{"추천 코스 추가"}</Title>
+      <PostRecommendedCourse
+        setRecommendedCourseDataList={setRecommendedCourseDataList}
+      />
     </Container>
   );
 };
